@@ -1,4 +1,4 @@
-package cz.klecansky.indexsequancefile;
+package cz.klecansky.indexsequancefile.blocks;
 
 import java.io.Serializable;
 import java.util.Objects;

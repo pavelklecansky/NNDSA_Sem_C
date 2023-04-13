@@ -1,18 +1,19 @@
 package cz.klecansky.indexsequancefile;
 
 
+import cz.klecansky.indexsequancefile.blocks.DataControlBlock;
+import cz.klecansky.indexsequancefile.files.IndexSequenceFile;
+import cz.klecansky.indexsequancefile.records.Record;
 import org.apache.commons.lang3.SerializationUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        DataFile dataFile = new DataFile("data");
-        DataControlBlock dataControlBlock = new DataControlBlock(74, 7,3000);
+        IndexSequenceFile indexSequenceFile = new IndexSequenceFile("data");
+        DataControlBlock dataControlBlock = new DataControlBlock(74, 7, 3000);
         int sizeof = sizeof(dataControlBlock);
         System.out.println(sizeof);
         System.out.println(UUID.randomUUID().toString().length());
@@ -24,7 +25,9 @@ public class Main {
 //        System.out.println(sizeof1);
 
         List<Record> generate = generate();
-        dataFile.build(generate);
+        indexSequenceFile.build(generate);
+
+        List<Integer> integers = indexSequenceFile.listOfKeys();
 
 //        int records = 0;
 //        for (int i = 1; i < dataFile.dataBlocksCount; i++) {

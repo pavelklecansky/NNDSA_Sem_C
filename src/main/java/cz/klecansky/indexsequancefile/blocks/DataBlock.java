@@ -1,4 +1,6 @@
-package cz.klecansky.indexsequancefile;
+package cz.klecansky.indexsequancefile.blocks;
+
+import cz.klecansky.indexsequancefile.records.IntKeyed;
 
 import java.io.Serializable;
 import java.util.List;

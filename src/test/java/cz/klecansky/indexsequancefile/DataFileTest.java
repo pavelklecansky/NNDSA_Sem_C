@@ -1,5 +1,7 @@
 package cz.klecansky.indexsequancefile;
 
+import cz.klecansky.indexsequancefile.blocks.DataControlBlock;
+import cz.klecansky.indexsequancefile.files.DataFile;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
