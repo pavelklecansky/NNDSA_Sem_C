@@ -4,29 +4,30 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public final class DataControlBlock implements Serializable {
-    private final Integer recordSize;
-    private final Integer recordsPerDataBlock;
-    private final Integer controlBlockSize = 251;
-    private final Integer dataBlockSize = 5837;
+    private final int recordSize;
+    private final int recordsPerDataBlock;
+    private final int controlBlockSize = 300;
+    private final int dataBlockSize;
 
-    public DataControlBlock(Integer recordSize, Integer recordsPerDataBlock) {
+    public DataControlBlock(int recordSize, int recordsPerDataBlock, int dataBlockSize) {
         this.recordSize = recordSize;
         this.recordsPerDataBlock = recordsPerDataBlock;
+        this.dataBlockSize = dataBlockSize;
     }
 
-    public Integer dataBlockSize() {
+    public int dataBlockSize() {
         return dataBlockSize;
     }
 
-    public Integer recordSize() {
+    public int recordSize() {
         return recordSize;
     }
 
-    public Integer recordsPerDataBlock() {
+    public int recordsPerDataBlock() {
         return recordsPerDataBlock;
     }
 
-    public Integer controlBlockSize() {
+    public int controlBlockSize() {
         return controlBlockSize;
     }
 
@@ -40,8 +41,7 @@ public final class DataControlBlock implements Serializable {
         }
         var that = (DataControlBlock) obj;
         return Objects.equals(this.recordSize, that.recordSize) &&
-                Objects.equals(this.recordsPerDataBlock, that.recordsPerDataBlock) &&
-                Objects.equals(this.controlBlockSize, that.controlBlockSize);
+                Objects.equals(this.recordsPerDataBlock, that.recordsPerDataBlock);
     }
 
     @Override

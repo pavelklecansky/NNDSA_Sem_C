@@ -1,6 +1,5 @@
 package cz.klecansky.indexsequancefile;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -13,6 +12,6 @@ class DataFileTest {
         DataFile dataFile = new DataFile("data");
         DataControlBlock dataControlBlock = dataFile.readControlBlock();
 
-        assertEquals(new DataControlBlock(800, 100), dataControlBlock);
+        assertEquals(new DataControlBlock(800, 100, 3000), dataControlBlock);
     }
 }

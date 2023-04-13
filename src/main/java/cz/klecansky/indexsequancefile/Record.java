@@ -6,7 +6,7 @@ public class Record implements IntKeyed, Serializable, Comparable<Record> {
 
     private static final int VALUE_LENGTH = 36;
 
-    private final Integer key;
+    private final int key;
     private final String value;
 
     public Record(Integer key, String value) {
@@ -16,7 +16,7 @@ public class Record implements IntKeyed, Serializable, Comparable<Record> {
     }
 
     @Override
-    public Integer getKey() {
+    public int key() {
         return key;
     }
 
@@ -35,12 +35,12 @@ public class Record implements IntKeyed, Serializable, Comparable<Record> {
 
         Record record = (Record) o;
 
-        return key.equals(record.key);
+        return key == record.key;
     }
 
     @Override
     public int hashCode() {
-        return key.hashCode();
+        return Integer.hashCode(key);
     }
 
     @Override
