@@ -10,17 +10,53 @@ import java.util.List;
 import java.util.Optional;
 
 public class IndexSequenceFile {
-    private final IndexFile indexFile;
-    private final DataFile dataFile;
+    private final SequenceFile<IndexRecord> indexFile;
+    private final SequenceFile<Record> dataFile;
 
     public IndexSequenceFile(String filename) throws IOException {
-        this.dataFile = new DataFile(filename + ".dat");
-        this.indexFile = new IndexFile(filename + ".index");
+        this.dataFile = new SequenceFile<>(filename + ".dat", FileConfig.DATA_FILE_RECORD_SIZE, FileConfig.DATA_FILE_RECORDS_PER_DATA_BLOCK, FileConfig.DATA_FILE_DATA_BLOCK_SIZE);
+        this.indexFile = new SequenceFile<>(filename + ".index", FileConfig.INDEX_FILE_RECORD_SIZE, FileConfig.INDEX_FILE_RECORDS_PER_DATA_BLOCK, FileConfig.INDEX_FILE_DATA_BLOCK_SIZE);
     }
 
     public void build(List<Record> recordList) throws IOException {
         List<IndexRecord> indexRecordList = buildDataFile(new ArrayList<>(recordList.stream().sorted().toList()));
         buildIndexFile(indexRecordList);
+    }
+
+    public String find(Integer key) throws IOException {
+        DataBlock<IndexRecord> indexBlock = null;
+        DataBlock<IndexRecord> bufferBlock = null;
+        for (int i = 1; i <= indexFile.getDataBlocksCount(); i++) {
+            indexBlock = indexFile.readBlock(i);
+            if (i < indexFile.getDataBlocksCount()) {
+                bufferBlock = indexFile.readBlock(i + 1);
+            }
+
+            if (isKeyInIndexBlockRange(key, indexBlock, bufferBlock)) {
+                for (int j = 0; j < indexBlock.recordList().size(); j++) {
+                    IndexRecord current = indexBlock.recordList().get(j);
+                    IndexRecord next = indexBlock.recordList().get(j + 1);
+                    if (key >= current.key() && key <= next.key()) {
+                        int block = current.block();
+                        DataBlock<Record> recordDataBlock = dataFile.readBlock(block);
+                        for (Record record : recordDataBlock.recordList()) {
+                            if (record.key() == key) {
+                                return record.value();
+                            }
+                        }
+                        throw new RuntimeException("No key find");
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    private boolean isKeyInIndexBlockRange(Integer key, DataBlock<IndexRecord> indexBlock, DataBlock<IndexRecord> bufferBlock) {
+        IndexRecord firstIndexBlock = indexBlock.recordList().stream().findFirst().get();
+        IndexRecord firstBufferBlock = bufferBlock.recordList().stream().findFirst().get();
+
+        return key >= firstIndexBlock.key() && key <= firstBufferBlock.key();
     }
 
     public List<Integer> listOfKeys() throws IOException {

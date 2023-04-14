@@ -29,14 +29,8 @@ public class Main {
 
         List<Integer> integers = indexSequenceFile.listOfKeys();
 
-//        int records = 0;
-//        for (int i = 1; i < dataFile.dataBlocksCount; i++) {
-//            DataBlock<Record> dataBlock = dataFile.readBlock(i);
-//            records += dataBlock.getRecordList().size();
-//            System.out.println(dataBlock.getRecordList());
-//        }
-//        System.out.println("Records: " + records);
-
+        String skey = indexSequenceFile.find(15);
+        System.out.println(skey);
     }
 
     public static int sizeof(Serializable obj) throws IOException {
@@ -47,8 +41,10 @@ public class Main {
         Random random = new Random();
         Set<Record> set = new HashSet<>();
 
+        set.add(new Record(15, "FinedKey"));
+
         while (set.size() < 10000) {
-            int randomNumber = random.nextInt(1, 40001);
+            int randomNumber = random.nextInt(1, 20001);
             Record record = new Record(randomNumber, UUID.randomUUID().toString());
             set.add(new Record(randomNumber, UUID.randomUUID().toString()));
             System.out.println(sizeof(record));

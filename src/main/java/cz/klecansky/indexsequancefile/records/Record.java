@@ -20,7 +20,7 @@ public class Record implements IntKeyed, Serializable, Comparable<Record> {
         return key;
     }
 
-    public String getValue() {
+    public String value() {
         return value;
     }
 
