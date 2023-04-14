@@ -2,6 +2,8 @@ package cz.klecansky.indexsequancefile.files;
 
 import cz.klecansky.indexsequancefile.blocks.DataBlock;
 import cz.klecansky.indexsequancefile.blocks.DataControlBlock;
+import cz.klecansky.indexsequancefile.logging.LogManager;
+import cz.klecansky.indexsequancefile.logging.Logger;
 import cz.klecansky.indexsequancefile.records.Record;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -11,15 +13,20 @@ import java.io.Serializable;
 
 public class SequenceFile<T> implements AutoCloseable {
 
+    private static Logger logger = LogManager.getLogger();
+
+    private final FileType type;
+
     private final DataControlBlock controlBlock;
     private final RandomAccessFile file;
     private int dataBlocksCount = 0;
     private int currentBlock = 1;
 
-    public SequenceFile(String filename, int recordSize, int recordsPerDataBlock, int dataBlockSize) throws IOException {
+    public SequenceFile(String filename, int recordSize, int recordsPerDataBlock, int dataBlockSize, FileType type) throws IOException {
         this.file = new RandomAccessFile(filename, "rw");
         this.controlBlock = new DataControlBlock(recordSize, recordsPerDataBlock, dataBlockSize);
         writeControlBlock(this.controlBlock);
+        this.type = type;
     }
 
     public DataControlBlock readControlBlock() throws IOException {
@@ -42,7 +49,7 @@ public class SequenceFile<T> implements AutoCloseable {
 
     public DataBlock<T> readBlock(int blockIndex) throws IOException {
         long offSet = blockOffSet(blockIndex);
-        System.out.println("Offset: " + offSet + " | Index:" + blockIndex);
+        logger.readBlock(blockIndex, type);
         file.seek(offSet);
         byte[] bytes = new byte[controlBlock.dataBlockSize()];
         file.read(bytes);

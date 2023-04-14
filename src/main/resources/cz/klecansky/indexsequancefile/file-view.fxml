@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="945.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.klecansky.indexsequancefile.FileController">
+   <children>
+      <VBox prefHeight="610.0" prefWidth="248.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#build" prefHeight="25.0" prefWidth="252.0" text="Build" />
+            <Button fx:id="listAllKeysButton" disable="true" mnemonicParsing="false" onAction="#listAllKeys" prefHeight="25.0" prefWidth="249.0" text="List all keys">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="findByKeyButton" disable="true" mnemonicParsing="false" onAction="#findByKey" prefHeight="25.0" prefWidth="251.0" text="Find by key">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Label fx:id="keyValue" prefHeight="17.0" prefWidth="236.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox prefHeight="610.0" prefWidth="469.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label text="List of keys">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ListView fx:id="keyList" prefHeight="1200.0" prefWidth="375.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" right="5.0" />
+               </VBox.margin>
+            </ListView>
+         </children>
+      </VBox>
+      <VBox prefHeight="500.0" prefWidth="453.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label text="Block log">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets top="1.0" />
+               </padding>
+            </Label>
+            <ListView fx:id="blockLog" prefHeight="1200.0" prefWidth="431.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" />
+               </VBox.margin>
+            </ListView>
+         </children>
+      </VBox>
+   </children>
+</HBox>

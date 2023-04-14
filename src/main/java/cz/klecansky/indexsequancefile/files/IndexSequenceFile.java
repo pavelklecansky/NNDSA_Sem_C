@@ -1,6 +1,7 @@
 package cz.klecansky.indexsequancefile.files;
 
 import cz.klecansky.indexsequancefile.blocks.DataBlock;
+import cz.klecansky.indexsequancefile.logging.LogManager;
 import cz.klecansky.indexsequancefile.records.IndexRecord;
 import cz.klecansky.indexsequancefile.records.Record;
 
@@ -14,8 +15,12 @@ public class IndexSequenceFile {
     private final SequenceFile<Record> dataFile;
 
     public IndexSequenceFile(String filename) throws IOException {
-        this.dataFile = new SequenceFile<>(filename + ".dat", FileConfig.DATA_FILE_RECORD_SIZE, FileConfig.DATA_FILE_RECORDS_PER_DATA_BLOCK, FileConfig.DATA_FILE_DATA_BLOCK_SIZE);
-        this.indexFile = new SequenceFile<>(filename + ".index", FileConfig.INDEX_FILE_RECORD_SIZE, FileConfig.INDEX_FILE_RECORDS_PER_DATA_BLOCK, FileConfig.INDEX_FILE_DATA_BLOCK_SIZE);
+        this.dataFile = new SequenceFile<>(filename + ".dat", FileConfig.DATA_FILE_RECORD_SIZE, FileConfig.DATA_FILE_RECORDS_PER_DATA_BLOCK, FileConfig.DATA_FILE_DATA_BLOCK_SIZE, FileType.DATA);
+        this.indexFile = new SequenceFile<>(filename + ".index",
+                                            FileConfig.INDEX_FILE_RECORD_SIZE,
+                                            FileConfig.INDEX_FILE_RECORDS_PER_DATA_BLOCK,
+                                            FileConfig.INDEX_FILE_DATA_BLOCK_SIZE,
+                                            FileType.INDEX);
     }
 
     public void build(List<Record> recordList) throws IOException {
