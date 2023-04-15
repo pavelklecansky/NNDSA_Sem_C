@@ -29,32 +29,46 @@ public class IndexSequenceFile {
     }
 
     public String find(Integer key) throws IOException {
-        DataBlock<IndexRecord> indexBlock = null;
-        DataBlock<IndexRecord> bufferBlock = null;
+        DataBlock<IndexRecord> currentBlock;
+        Optional<DataBlock<IndexRecord>> bufferBlock = Optional.empty();
         for (int i = 1; i <= indexFile.getDataBlocksCount(); i++) {
-            indexBlock = indexFile.readBlock(i);
-            if (i < indexFile.getDataBlocksCount()) {
-                bufferBlock = indexFile.readBlock(i + 1);
+            if (bufferBlock.isPresent()) {
+                currentBlock = bufferBlock.get();
+            } else {
+                currentBlock = indexFile.readBlock(i);
             }
 
-            if (isKeyInIndexBlockRange(key, indexBlock, bufferBlock)) {
-                for (int j = 0; j < indexBlock.recordList().size(); j++) {
-                    IndexRecord current = indexBlock.recordList().get(j);
-                    IndexRecord next = indexBlock.recordList().get(j + 1);
-                    if (key >= current.key() && key <= next.key()) {
-                        int block = current.block();
-                        DataBlock<Record> recordDataBlock = dataFile.readBlock(block);
-                        for (Record record : recordDataBlock.recordList()) {
-                            if (record.key() == key) {
-                                return record.value();
-                            }
-                        }
-                        throw new RuntimeException("No key find");
+            for (int j = 0; j < currentBlock.recordList().size(); j++) {
+                IndexRecord current = currentBlock.recordList().get(j);
+                IndexRecord next = null;
+                if (j + 1 < currentBlock.recordList().size()) {
+                    next = currentBlock.recordList().get(j + 1);
+                }
+                if (next == null) {
+                    bufferBlock = Optional.ofNullable((i < indexFile.getDataBlocksCount()) ? indexFile.readBlock(i + 1) : null);
+                    if (bufferBlock.isPresent()) {
+                        next = bufferBlock.get().recordList().get(0);
                     }
                 }
+
+                if (key >= current.key() && (isLastBlock(current.block()) || key <= next.key())) {
+                    int block = current.block();
+                    DataBlock<Record> recordDataBlock = dataFile.readBlock(block);
+                    for (Record record : recordDataBlock.recordList()) {
+                        if (record.key() == key) {
+                            return record.value();
+                        }
+                    }
+                    throw new RuntimeException("No key find");
+                }
             }
+
         }
-        return "";
+        throw new RuntimeException("No key find");
+    }
+
+    private boolean isLastBlock(int block) {
+        return dataFile.getDataBlocksCount() <= block;
     }
 
     private boolean isKeyInIndexBlockRange(Integer key, DataBlock<IndexRecord> indexBlock, DataBlock<IndexRecord> bufferBlock) {
