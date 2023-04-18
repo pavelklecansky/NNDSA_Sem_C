@@ -29,13 +29,6 @@ public class SequenceFile<T> implements AutoCloseable {
         this.type = type;
     }
 
-    public DataControlBlock readControlBlock() throws IOException {
-        file.seek(0);
-        byte[] bytes = new byte[controlBlock.controlBlockSize()];
-        file.read(bytes, 0, controlBlock.controlBlockSize());
-        return deserializeDataControlBlock(bytes);
-    }
-
 
     public void writeDataBlock(DataBlock<T> block) throws IOException {
         file.seek(blockOffSet(currentBlock));
@@ -87,6 +80,13 @@ public class SequenceFile<T> implements AutoCloseable {
         file.seek(0);
     }
 
+    public DataControlBlock readControlBlock() throws IOException {
+        file.seek(0);
+        byte[] bytes = new byte[controlBlock.controlBlockSize()];
+        file.read(bytes, 0, controlBlock.controlBlockSize());
+        return deserializeDataControlBlock(bytes);
+    }
+
     private byte[] serialize(Serializable object) {
         return SerializationUtils.serialize(object);
     }
@@ -98,6 +98,4 @@ public class SequenceFile<T> implements AutoCloseable {
     private DataBlock<T> deserializeDataBlock(byte[] bytes) {
         return SerializationUtils.deserialize(bytes);
     }
-
-
 }

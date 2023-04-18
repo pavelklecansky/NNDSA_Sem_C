@@ -44,7 +44,6 @@ public class IndexSequenceFile implements AutoCloseable {
                     }
                 }
 
-
                 if (key >= current.key() && (isLastBlock(current.block()) || key < next.key())) {
                     int block = current.block();
                     DataBlock<Record> recordDataBlock = dataFile.readBlock(block);

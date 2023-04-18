@@ -80,9 +80,11 @@ public class FileController implements Initializable {
                 blockLog.getItems().addAll(logger.getLogs());
                 keyValue.setText(value);
             } catch (Exception e) {
+                keyValue.setText("");
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Key not find");
                 alert.setContentText("Ooops, keys was not find");
+
 
                 alert.showAndWait();
             }
