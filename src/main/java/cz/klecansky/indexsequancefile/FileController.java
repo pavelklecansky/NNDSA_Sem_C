@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +38,22 @@ public class FileController implements Initializable {
     private RecordGenerator recordGenerator;
     private IndexSequenceFile indexSequenceFile;
 
+    private Stage stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+        this.stage.setOnCloseRequest(event -> {
+            // close the file if it is open
+            if (indexSequenceFile != null) {
+                try {
+                    indexSequenceFile.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,7 +63,7 @@ public class FileController implements Initializable {
     @FXML
     public void build(ActionEvent actionEvent) throws IOException {
         indexSequenceFile = new IndexSequenceFile(FILE_NAME);
-        indexSequenceFile.build(recordGenerator.generate());
+        indexSequenceFile.build(recordGenerator.generate(10000));
         activateButtonsAfterBuild();
     }
 
@@ -94,4 +111,6 @@ public class FileController implements Initializable {
         dialog.setContentText("Enter key:");
         return dialog;
     }
+
+
 }

@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 public class SequenceFile<T> implements AutoCloseable {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final FileType type;
 
