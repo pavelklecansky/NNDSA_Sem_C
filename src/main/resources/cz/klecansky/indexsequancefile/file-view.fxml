@@ -7,23 +7,25 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="945.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.klecansky.indexsequancefile.FileController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="945.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.klecansky.indexsequancefile.FileController">
    <children>
-      <VBox prefHeight="610.0" prefWidth="248.0">
+      <VBox prefHeight="610.0" prefWidth="300.0" styleClass="bg-subtle">
          <children>
-            <Button mnemonicParsing="false" onAction="#build" prefHeight="25.0" prefWidth="252.0" text="Build" />
-            <Button fx:id="listAllKeysButton" disable="true" mnemonicParsing="false" onAction="#listAllKeys" prefHeight="25.0" prefWidth="249.0" text="List all keys">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-2" text="Indexed-sequential file" textAlignment="CENTER" wrappingWidth="250.13671875" />
+            <Button mnemonicParsing="false" onAction="#build" prefHeight="25.0" prefWidth="300.0" text="Build" />
+            <Button fx:id="listAllKeysButton" disable="true" mnemonicParsing="false" onAction="#listAllKeys" prefHeight="25.0" prefWidth="300.0" text="List all keys">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="findByKeyButton" disable="true" mnemonicParsing="false" onAction="#findByKey" prefHeight="25.0" prefWidth="251.0" text="Find by key">
+            <Button fx:id="findByKeyButton" disable="true" mnemonicParsing="false" onAction="#findByKey" prefHeight="25.0" prefWidth="300.0" text="Find by key">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </Button>
-            <Label fx:id="keyValue" prefHeight="17.0" prefWidth="236.0">
+            <Label fx:id="keyValue" prefHeight="17.0" prefWidth="300.0">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
